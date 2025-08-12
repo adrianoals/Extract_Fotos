@@ -5,7 +5,7 @@ credentials.json
 *.pem
 
 # Pasta de documentação interna (desenvolvimento)
-docs/
+# docs/  # Comentado para permitir versionamento entre computadores
 
 # Arquivos de desenvolvimento Python
 __pycache__/
