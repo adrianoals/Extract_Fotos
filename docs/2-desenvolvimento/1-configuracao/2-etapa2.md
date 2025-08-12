@@ -1,9 +1,11 @@
 ## ** Próximas Ações (Etapa 2):**
 
 ### **2.1 Instalação do `uv` e Dependências**
+
 ```bash
-# Instalar uv (se não tiver)
-pip install uv
+# Instalar uv (se não tiver) 
+# No windows, abra seu PowerShell e cole o seguinte comando:
+irm https://astral.sh/uv/install.ps1 | iex
 
 # Criar ambiente virtual e instalar dependências
 uv venv
