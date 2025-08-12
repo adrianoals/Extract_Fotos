@@ -12,33 +12,56 @@ uv venv
 uv pip install -r requirements.txt
 ```
 
-### **2.2 Configuração Google Drive API**
-- Criar projeto no Google Cloud Console
-- Habilitar Google Drive API
-- Criar credenciais (Service Account)
-- Baixar arquivo `credentials.json`
-- Configurar permissões nas pastas
-- **URLs importantes:**
-  - Google Cloud Console: https://console.cloud.google.com/
-  - Google Drive API: https://developers.google.com/drive/api
-  - Biblioteca Python: https://googleapis.dev/python/drive/latest/
+### **2.2 Configuração Google Drive API** ✅ **CONCLUÍDA!**
+- ✅ **Projeto existente** no Google Cloud Console
+- ✅ **Google Drive API** já habilitada
+- ✅ **Google Sheets API** já habilitada
+- ✅ **Credenciais OAuth 2.0** já configuradas
+- ✅ **Arquivo .env** configurado com credenciais fixas
+- ✅ **Folder ID será inserido** via terminal (mais flexível)
+
+**URLs importantes (para referência):**
+- Google Cloud Console: https://console.cloud.google.com/
+- Google Drive API: https://developers.google.com/drive/api
+- Biblioteca Python: https://googleapis.dev/python/drive/latest/
 
 ### **2.3 Criação dos Primeiros Arquivos de Código**
 ```
 src/
-├── main.py              # Arquivo principal
+├── main.py              # Arquivo principal com CLI interativo
 ├── google_drive.py      # Cliente Google Drive
 ├── parser.py            # Parser de nomes de arquivos
 └── excel_generator.py   # Gerador de Excel
 ```
 
 **Detalhamento dos arquivos:**
-- `src/main.py` - Arquivo principal com CLI e fluxo de execução
+- `src/main.py` - **CLI interativo** com menu para tipo de condomínio e input do Folder ID
 - `src/google_drive.py` - Cliente Google Drive API para listar arquivos
 - `src/parser.py` - Parser de nomes de arquivos usando regex
 - `src/excel_generator.py` - Gerador de planilhas Excel organizadas
 
-### **2.4 Testes Básicos**
+### **2.4 Interface CLI Planejada**
+```
+=== EXTRACT FOTOS ===
+Escolha o tipo de condomínio:
+1. COM blocos (bloco-apartamento-leitura)
+2. SEM blocos (apartamento-leitura)
+
+Digite o Folder ID da pasta do Google Drive: [input do usuário]
+```
+
+### **2.5 Testes Básicos**
 - Testar conexão com Google Drive
 - Testar parser de nomes
 - Validar estrutura do projeto
+- Testar interface CLI
+
+### **2.6 Status Atual** 🚀
+- ✅ **Estrutura do projeto** criada
+- ✅ **Dependências** definidas
+- ✅ **Configuração OAuth 2.0** completa
+- ✅ **Arquivo .env** configurado com credenciais fixas
+- ✅ **Folder ID dinâmico** via terminal (mais flexível)
+- ✅ **Pronto para desenvolvimento** do código!
+
+**Próximo passo:** Implementar os arquivos de código em `src/` com interface CLI interativa

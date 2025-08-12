@@ -33,23 +33,35 @@ pandas
 openpyxl
 click
 python-dotenv
+google-auth-oauthlib  # Para OAuth 2.0
+google-auth-httplib2  # Para requisições HTTP
 ```
 
-### **2. .env (arquivo de variáveis de ambiente):**
+### **2. .env (arquivo de variáveis de ambiente - OAuth 2.0):**
 ```env
-GOOGLE_DRIVE_CREDENTIALS_FILE=credentials.json
-GOOGLE_DRIVE_FOLDER_ID=your_folder_id_here
+# Credenciais Google OAuth 2.0 (fixas)
+GOOGLE_CLIENT_ID=your_client_id_here
+GOOGLE_CLIENT_SECRET=your_client_secret_here
+GOOGLE_PROJECT_ID=your_project_id_here
+
+# NOTA: Folder ID será inserido via terminal (mais flexível)
 ```
 
 ### **3. .env.example (arquivo modelo):**
 ```env
-# Copie este arquivo para .env e preencha com suas configurações
-GOOGLE_DRIVE_CREDENTIALS_FILE=credentials.json
-GOOGLE_DRIVE_FOLDER_ID=your_folder_id_here
+# Copie este arquivo para .env e preencha com suas credenciais
+# Credenciais Google OAuth 2.0 (fixas)
+GOOGLE_CLIENT_ID=your_client_id_here
+GOOGLE_CLIENT_SECRET=your_client_secret_here
+GOOGLE_PROJECT_ID=your_project_id_here
 
-# Exemplo de configuração:
-# GOOGLE_DRIVE_CREDENTIALS_FILE=meu-condominio-credentials.json
-# GOOGLE_DRIVE_FOLDER_ID=1ABC123DEF456GHI789JKL
+# NOTA: Folder ID será inserido via terminal para cada execução
+# Isso permite usar diferentes pastas sem editar o arquivo
+
+# Exemplo de configuração (substitua pelos seus valores reais):
+# GOOGLE_CLIENT_ID=seu_client_id_aqui
+# GOOGLE_CLIENT_SECRET=seu_client_secret_aqui
+# GOOGLE_PROJECT_ID=seu_project_id_aqui
 ```
 
 ### **4. README.md básico:**
@@ -61,15 +73,22 @@ Sistema para extrair informações de nomes de arquivos de imagens do Google Dri
 ## Instalação
 
 1. Clone o repositório
-2. Copie `.env.example` para `.env` e configure suas credenciais
+2. Copie `.env.example` para `.env` e configure suas credenciais OAuth 2.0
 3. Instale as dependências: `uv pip install -r requirements.txt`
 4. Execute: `python src/main.py`
 
 ## Configuração
 
 1. Copie o arquivo `.env.example` para `.env`
-2. Edite o arquivo `.env` com suas configurações do Google Drive
-3. Configure as credenciais do Google Drive API
+2. Edite o arquivo `.env` com suas credenciais OAuth 2.0 do Google Drive
+3. **Folder ID será inserido via terminal** (mais flexível para diferentes condomínios)
+
+## Como usar
+
+1. Execute o programa: `python src/main.py`
+2. Escolha o tipo de condomínio (com ou sem blocos)
+3. Digite o Folder ID da pasta do Google Drive
+4. O programa processará os arquivos e gerará o Excel
 
 ## Estrutura do Projeto
 
@@ -80,7 +99,7 @@ Extract_Fotos/
 ├── docs/                   # Documentação
 ├── tests/                  # Testes
 ├── requirements.txt        # Dependências
-├── .env                    # Suas configurações (não versionado)
+├── .env                    # Suas credenciais OAuth 2.0 (fixas)
 ├── .env.example           # Modelo de configuração
 └── README.md              # Este arquivo
 ```
@@ -98,6 +117,6 @@ mkdir src config tests
 # 3. Adicionar ao git (excluindo .env)
 echo ".env" >> .gitignore
 git add .
-git commit -m "Estrutura inicial do projeto"
+git commit -m "Estrutura inicial do projeto com OAuth 2.0"
 git push origin main
 ```
