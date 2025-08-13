@@ -12,12 +12,13 @@ uv venv
 uv pip install -r requirements.txt
 ```
 
-### **2.2 Configuração Google Drive API** ✅ **CONCLUÍDA!**
+### **2.2 Configuração Google Drive API (Service Account)** ✅ **CONCLUÍDA!**
 - ✅ **Projeto existente** no Google Cloud Console
 - ✅ **Google Drive API** já habilitada
 - ✅ **Google Sheets API** já habilitada
-- ✅ **Credenciais OAuth 2.0** já configuradas
-- ✅ **Arquivo .env** configurado com credenciais fixas
+- ✅ **Service Account** criado e configurado
+- ✅ **Arquivo credentials.json** baixado com credenciais
+- ✅ **Permissões configuradas** para acessar pastas compartilhadas
 - ✅ **Folder ID será inserido** via terminal (mais flexível)
 
 **URLs importantes (para referência):**
@@ -51,7 +52,7 @@ Digite o Folder ID da pasta do Google Drive: [input do usuário]
 ```
 
 ### **2.5 Testes Básicos**
-- Testar conexão com Google Drive
+- Testar conexão com Google Drive via Service Account
 - Testar parser de nomes
 - Validar estrutura do projeto
 - Testar interface CLI
@@ -59,9 +60,10 @@ Digite o Folder ID da pasta do Google Drive: [input do usuário]
 ### **2.6 Status Atual** 🚀
 - ✅ **Estrutura do projeto** criada
 - ✅ **Dependências** definidas
-- ✅ **Configuração OAuth 2.0** completa
-- ✅ **Arquivo .env** configurado com credenciais fixas
+- ✅ **Configuração Service Account** completa
+- ✅ **Arquivo credentials.json** configurado com credenciais
+- ✅ **Permissões configuradas** para acessar pastas compartilhadas
 - ✅ **Folder ID dinâmico** via terminal (mais flexível)
 - ✅ **Pronto para desenvolvimento** do código!
 
-**Próximo passo:** Implementar os arquivos de código em `src/` com interface CLI interativa
+**Próximo passo:** Implementar os arquivos de código em `src/` com interface CLI interativa usando Service Account
