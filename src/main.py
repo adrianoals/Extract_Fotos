@@ -152,14 +152,14 @@ def main():
         # Carrega variáveis de ambiente
         load_dotenv()
         
-        # Verifica se as credenciais estão configuradas
-        required_vars = ['GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_PROJECT_ID']
+        # Verifica se as credenciais da Service Account estão configuradas
+        required_vars = ['GOOGLE_SERVICE_ACCOUNT_INFO']
         missing_vars = [var for var in required_vars if not os.getenv(var)]
         
         if missing_vars:
             print("❌ Configuração incompleta!")
             print(f"   Variáveis faltando: {', '.join(missing_vars)}")
-            print("   Configure o arquivo .env com suas credenciais OAuth 2.0")
+            print("   Configure o arquivo .env com o conteúdo JSON da sua Service Account")
             return
         
         # Exibe banner

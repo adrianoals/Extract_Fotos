@@ -5,14 +5,14 @@ Sistema para extrair informações de nomes de arquivos de imagens do Google Dri
 ## Instalação
 
 1. Clone o repositório
-2. Copie `.env.example` para `.env` e configure suas credenciais da Service Account
+2. Copie `env.example` para `.env` e configure suas credenciais da Service Account
 3. Instale as dependências: `uv pip install -r requirements.txt`
 4. Execute: `python src/main.py`
 
 ## Configuração
 
-1. Copie o arquivo `.env.example` para `.env`
-2. Edite o arquivo `.env` com suas credenciais da Service Account do Google Drive
+1. Copie o arquivo `env.example` para `.env`
+2. Edite o arquivo `.env` com o conteúdo JSON da sua Service Account do Google Drive
 3. Configure as permissões da Service Account para acessar as pastas compartilhadas
 
 ## Como usar
@@ -32,7 +32,7 @@ Extract_Fotos/
 ├── tests/                  # Testes
 ├── requirements.txt        # Dependências
 ├── .env                    # Suas credenciais da Service Account (não versionado)
-├── .env.example           # Modelo de configuração
+├── env.example            # Modelo de configuração
 └── README.md              # Este arquivo
 ```
 

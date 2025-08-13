@@ -1,67 +1,61 @@
 """
 Google Drive Client para Extract Fotos
-Responsável por conectar e listar arquivos do Google Drive
+Responsável por conectar e listar arquivos do Google Drive usando Service Account
 """
 
 import os
+import json
 from typing import List, Dict, Optional
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
+from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-import pickle
 
 # Escopos necessários para acessar o Google Drive
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 
 class GoogleDriveClient:
-    """Cliente para interagir com a API do Google Drive"""
+    """Cliente para interagir com a API do Google Drive usando Service Account"""
     
     def __init__(self):
-        """Inicializa o cliente Google Drive"""
-        self.creds = None
+        """Inicializa o cliente Google Drive com Service Account"""
         self.service = None
         self._authenticate()
     
     def _authenticate(self):
-        """Autentica com o Google Drive usando OAuth 2.0"""
-        # Verifica se já existe um token salvo
-        if os.path.exists('token.pickle'):
-            with open('token.pickle', 'rb') as token:
-                self.creds = pickle.load(token)
-        
-        # Se não há credenciais válidas, faz o fluxo de autenticação
-        if not self.creds or not self.creds.valid:
-            if self.creds and self.creds.expired and self.creds.refresh_token:
-                self.creds.refresh(Request())
-            else:
-                # Carrega credenciais do arquivo .env
-                client_id = os.getenv('GOOGLE_CLIENT_ID')
-                client_secret = os.getenv('GOOGLE_CLIENT_SECRET')
-                
-                if not client_id or not client_secret:
-                    raise ValueError("GOOGLE_CLIENT_ID e GOOGLE_CLIENT_SECRET devem estar configurados no .env")
-                
-                # Executa fluxo de autenticação OAuth 2.0
-                flow = InstalledAppFlow.from_client_config({
-                    'installed': {
-                        'client_id': client_id,
-                        'client_secret': client_secret,
-                        'auth_uri': 'https://accounts.google.com/o/oauth2/auth',
-                        'token_uri': 'https://oauth2.googleapis.com/token',
-                        'scopes': SCOPES
-                    }
-                }, SCOPES)
-                
-                self.creds = flow.run_local_server(port=0)
+        """Autentica com o Google Drive usando Service Account"""
+        try:
+            # Obtém as credenciais do arquivo .env
+            service_account_info = os.getenv('GOOGLE_SERVICE_ACCOUNT_INFO')
             
-            # Salva as credenciais para a próxima execução
-            with open('token.pickle', 'wb') as token:
-                pickle.dump(self.creds, token)
-        
-        # Cria o serviço do Google Drive
-        self.service = build('drive', 'v3', credentials=self.creds)
+            if not service_account_info:
+                raise ValueError(
+                    "GOOGLE_SERVICE_ACCOUNT_INFO deve estar configurado no .env\n"
+                    "Cole o conteúdo JSON da sua Service Account nesta variável"
+                )
+            
+            try:
+                # Converte a string JSON para dicionário
+                credentials_dict = json.loads(service_account_info)
+            except json.JSONDecodeError:
+                raise ValueError(
+                    "GOOGLE_SERVICE_ACCOUNT_INFO deve conter JSON válido\n"
+                    "Verifique se o JSON foi copiado corretamente"
+                )
+            
+            # Cria credenciais da Service Account
+            credentials = service_account.Credentials.from_service_account_info(
+                credentials_dict, 
+                scopes=SCOPES
+            )
+            
+            # Cria o serviço do Google Drive
+            self.service = build('drive', 'v3', credentials=credentials)
+            
+            print("✅ Autenticação com Service Account realizada com sucesso!")
+            
+        except Exception as e:
+            print(f"❌ Erro na autenticação: {e}")
+            raise
     
     def list_files_in_folder(self, folder_id: str) -> List[Dict]:
         """
@@ -133,6 +127,27 @@ class GoogleDriveClient:
         except HttpError as error:
             print(f"❌ Erro ao obter informações do arquivo {file_id}: {error}")
             return None
+    
+    def test_connection(self) -> bool:
+        """
+        Testa a conexão com o Google Drive
+        
+        Returns:
+            True se conectado com sucesso, False caso contrário
+        """
+        try:
+            # Tenta listar arquivos (limite 1 para teste rápido)
+            response = self.service.files().list(
+                pageSize=1,
+                fields='files(id, name)'
+            ).execute()
+            
+            print("✅ Conexão com Google Drive testada com sucesso!")
+            return True
+            
+        except Exception as e:
+            print(f"❌ Erro ao testar conexão: {e}")
+            return False
 
 # Função de conveniência para uso direto
 def get_files_from_folder(folder_id: str) -> List[Dict]:
@@ -150,7 +165,7 @@ def get_files_from_folder(folder_id: str) -> List[Dict]:
 
 if __name__ == "__main__":
     # Teste básico da classe
-    print("🧪 Testando Google Drive Client...")
+    print("🧪 Testando Google Drive Client com Service Account...")
     
     # Carrega variáveis de ambiente
     from dotenv import load_dotenv
@@ -160,12 +175,16 @@ if __name__ == "__main__":
         client = GoogleDriveClient()
         print("✅ Cliente Google Drive inicializado com sucesso!")
         
-        # Teste com um folder ID de exemplo
-        test_folder_id = "test_folder_id"
-        print(f"📁 Testando listagem de arquivos na pasta: {test_folder_id}")
-        
-        files = client.list_files_in_folder(test_folder_id)
-        print(f"📊 Arquivos encontrados: {len(files)}")
+        # Testa conexão
+        if client.test_connection():
+            print("✅ Conexão com Google Drive funcionando!")
+        else:
+            print("❌ Problema na conexão com Google Drive")
         
     except Exception as e:
         print(f"❌ Erro durante teste: {e}")
+        print("\n💡 Verifique:")
+        print("   1. Se o arquivo .env está configurado corretamente")
+        print("   2. Se GOOGLE_SERVICE_ACCOUNT_INFO contém JSON válido")
+        print("   3. Se as APIs do Google Drive estão habilitadas")
+        print("   4. Se a Service Account tem permissões adequadas")
