@@ -23,21 +23,25 @@ def print_banner():
 
 def print_menu():
     """Exibe o menu de opções"""
-    print("📋 Escolha o tipo de condomínio:")
-    print("   1. COM blocos (formato: bloco-apartamento-leitura)")
-    print("   2. SEM blocos (formato: apartamento-leitura)")
-    print("   3. Sair")
+    print("📋 Extract Fotos - Sistema Automático")
+    print("   O sistema detecta automaticamente o formato das legendas!")
+    print("   Formatos suportados:")
+    print("   • COM blocos: A-101-1234.jpg")
+    print("   • SEM blocos: 101-1234.jpg")
+    print()
+    print("   1. Processar pasta do Google Drive")
+    print("   2. Sair")
     print()
 
 def get_user_choice() -> int:
     """Obtém a escolha do usuário"""
     while True:
         try:
-            choice = input("🔢 Digite sua opção (1-3): ").strip()
-            if choice in ['1', '2', '3']:
+            choice = input("🔢 Digite sua opção (1-2): ").strip()
+            if choice in ['1', '2']:
                 return int(choice)
             else:
-                print("❌ Opção inválida! Digite 1, 2 ou 3.")
+                print("❌ Opção inválida! Digite 1 ou 2.")
         except KeyboardInterrupt:
             print("\n\n👋 Programa interrompido pelo usuário.")
             sys.exit(0)
@@ -71,13 +75,12 @@ def get_folder_id() -> str:
         else:
             print("🔄 Digite o Folder ID novamente.")
 
-def process_files(folder_id: str, condominio_type: int) -> bool:
+def process_files(folder_id: str) -> bool:
     """
     Processa os arquivos da pasta do Google Drive
     
     Args:
         folder_id: ID da pasta no Google Drive
-        condominio_type: Tipo de condomínio (1=com blocos, 2=sem blocos)
         
     Returns:
         True se sucesso, False caso contrário
@@ -85,7 +88,7 @@ def process_files(folder_id: str, condominio_type: int) -> bool:
     try:
         print(f"\n🚀 Iniciando processamento...")
         print(f"   📁 Pasta: {folder_id}")
-        print(f"   🏢 Tipo: {'COM blocos' if condominio_type == 1 else 'SEM blocos'}")
+        print(f"   🧠 Tipo: Detectado automaticamente pelo sistema")
         print()
         
         # 1. Conecta ao Google Drive
@@ -129,7 +132,7 @@ def process_files(folder_id: str, condominio_type: int) -> bool:
         
         # 7. Gera relatório Excel
         print("\n📊 Gerando relatório Excel...")
-        timestamp = f"{'com_blocos' if condominio_type == 1 else 'sem_blocos'}_{len(files_info)}_arquivos"
+        timestamp = f"auto_detectado_{len(files_info)}_arquivos"
         output_file = generate_excel_report(files_info, f"extract_fotos_{timestamp}.xlsx")
         
         print(f"✅ Relatório gerado com sucesso: {output_file}")
@@ -172,15 +175,15 @@ def main():
             # Obtém escolha do usuário
             choice = get_user_choice()
             
-            if choice == 3:
+            if choice == 2:
                 print("\n👋 Obrigado por usar o Extract Fotos!")
                 break
             
             # Obtém Folder ID
             folder_id = get_folder_id()
             
-            # Processa arquivos
-            success = process_files(folder_id, choice)
+            # Processa arquivos (tipo detectado automaticamente)
+            success = process_files(folder_id)
             
             if success:
                 # Pergunta se quer processar outra pasta
