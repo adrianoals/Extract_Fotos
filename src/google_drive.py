@@ -11,7 +11,9 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 # Escopos necessários para acessar o Google Drive
-SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
+# 'drive.readonly' = só leitura
+# 'drive' = leitura + escrita + modificação
+SCOPES = ['https://www.googleapis.com/auth/drive']
 
 class GoogleDriveClient:
     """Cliente para interagir com a API do Google Drive usando Service Account"""
