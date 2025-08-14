@@ -4,6 +4,13 @@ credentials.json
 *.key
 *.pem
 
+# Arquivos de dados e relatórios
+*.xlsx
+*.xls
+*.csv
+*.json
+extract_fotos_*.xlsx
+
 # Pasta de documentação interna (desenvolvimento)
 # docs/  # Comentado para permitir versionamento entre computadores
 
